@@ -7,14 +7,12 @@ public class Node {
 	private String type;
 	private Set<String> hsaId;
 	private Set<String> graphNames;
-	private String firstname;
 	
-	public Node(Integer id, String type, Set<String> hsaId, Set<String> graphNames, String firstname){
+	public Node(Integer id, String type, Set<String> hsaId, Set<String> graphNames){
 		this.id = id;
 		this.type = type;
 		this.hsaId = hsaId;
 		this.graphNames = graphNames;
-		this.firstname = firstname;
 	}
 	
 	
@@ -37,14 +35,6 @@ public class Node {
 	}
 
 
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -66,8 +56,7 @@ public class Node {
 	@Override
 	public String toString() {
 		return "Node [id=" + id + ", type=" + type + ", hsaId=" + hsaId
-				+ ", graphNames=" + graphNames + ", firstname=" + firstname
-				+ "]";
+				+ ", graphNames=" + graphNames + "]";
 	}
 
 	
