@@ -178,7 +178,13 @@ public class Processing {
 		
 		
 		for(Group g: allGroup){
-			System.out.println(g.getId() + "\t" + g.getComponents());
+			Set <String> gidname = new HashSet<String>();
+			for(Integer c : g.getComponents()){
+				for(String s: idnameMap.get(c)){
+					gidname.add(s);
+				}
+			}
+			idnameMap.put(g.getId(), gidname);
 		}
 		
 	
