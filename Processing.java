@@ -59,9 +59,14 @@ public class Processing {
 		
 		String htmReg = "<area .*title=\"([0-9].*)\".*";
 		Pattern hsaPattern = Pattern.compile(htmReg);
+		String htmReghsa = "<area .*title=\"hsa([0-9]+): (.*)\" onmouseover=.*";
+		Pattern hsaPatterng = Pattern.compile(htmReghsa);
 		
 		while( (line = htmin.readLine()) != null ){
+			
 			Matcher hsaIdNameMatcher = hsaPattern.matcher(line);
+			Matcher hsaIdNameMatcherg = hsaPatterng.matcher(line);
+			
 			if(hsaIdNameMatcher.matches()){
 				String idnames[] = hsaIdNameMatcher.group(1).split(",");
 				for(String s : idnames){
@@ -74,6 +79,9 @@ public class Processing {
 						//System.out.println(tempMatcher.group(1) + "\t" + tempMatcher.group(2));
 					}
 				}
+			}
+			if(hsaIdNameMatcherg.matches()){
+				hsaIdNameMap.put(hsaIdNameMatcherg.group(1), hsaIdNameMatcherg.group(2));
 			}
 		}
 		htmin.close();
@@ -94,7 +102,7 @@ public class Processing {
 			Matcher matcher4 = pattern4.matcher(line);
 			
 			if( matcher1.matches() ){
-				
+				//System.out.println(matcher1.group(4));
 				Node node = new Node(null, null, null, null);
 				Set<String> hsaid = new HashSet<String>();
 				node.setId(Integer.parseInt(matcher1.group(1)));
