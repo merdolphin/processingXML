@@ -28,9 +28,13 @@ public class Processing {
 		Map <String, String>hsaIdNameMap = new HashMap<String, String>();
 	
 		
-		File xmlfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/hsa04360.xml");
-		File htmfile = new File("/scratch/lina/Network/autism/SimBoolNet CNV AG Autism/AG_show_pathway.htm");
-		File outputfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/output.txt");
+		//File xmlfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/hsa04360.xml");
+		//File htmfile = new File("/scratch/lina/Network/autism/SimBoolNet CNV AG Autism/AG_show_pathway.htm");
+		//File outputfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/output.txt");
+		
+		File xmlfile = new File(args[0]);
+		File htmfile = new File(args[1]);
+		File outputfile = new File(args[2]);
 		
 		FileReader xmlreader = new FileReader(xmlfile);
 		BufferedReader xmlin = new BufferedReader(xmlreader);
