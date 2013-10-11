@@ -1,6 +1,7 @@
 /***
- * written by lina <lina.oahz@gmail.com>
- * on Fri Oct  4 22:05:09 SGT 2013
+ * Copyright lina <lina.oahz@gmail.com>
+ * Written on Fri Oct  4 22:05:09 SGT 2013
+ * Last major modification on Fri Oct 11 12:17:35 SGT 2013
  */
 package processingXML;
 
@@ -28,13 +29,13 @@ public class Processing {
 		Map <String, String>hsaIdNameMap = new HashMap<String, String>();
 	
 		
-		//File xmlfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/hsa04360.xml");
-		//File htmfile = new File("/scratch/lina/Network/autism/SimBoolNet CNV AG Autism/AG_show_pathway.htm");
-		//File outputfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/output.txt");
+		File xmlfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/hsa04010.xml");
+		File htmfile = new File("/scratch/lina/Network/autism/SimBoolNet CNV AG Autism/MAPK_show_pathway.htm");
+		File outputfile = new File("/home/lina/scratch/Network/autism/SimBoolNet CNV AG Autism/output.txt");
 		
-		File xmlfile = new File(args[0]);
-		File htmfile = new File(args[1]);
-		File outputfile = new File(args[2]);
+//		File xmlfile = new File(args[0]);
+//		File htmfile = new File(args[1]);
+//		File outputfile = new File(args[2]);
 		
 		FileReader xmlreader = new FileReader(xmlfile);
 		BufferedReader xmlin = new BufferedReader(xmlreader);
@@ -52,6 +53,9 @@ public class Processing {
 		String lineRegex1component = "        <component id=\"([0-9].+)\".*";
 		Pattern pattern1c = Pattern.compile(lineRegex1component);
 		
+		String lineRegex1compound = "    <entry id=\"([0-9]*)\" name=\"cpd:(.*)\" type=\"(.*)\"";
+		Pattern pattern1cpd = Pattern.compile(lineRegex1compound);
+		
 		String lineRegex2 = "        <graphics name=\"(.+)\" fgcolor.*";
 		Pattern pattern2 = Pattern.compile(lineRegex2);
 		
@@ -61,15 +65,18 @@ public class Processing {
 		String lineRegex4 = "        <subtype name=\"(.+)\" value=\"(.+)\".*";
 		Pattern pattern4 = Pattern.compile(lineRegex4);
 		
-		String htmReg = "<area .*title=\"([0-9].*)\".*";
-		Pattern hsaPattern = Pattern.compile(htmReg);
+		String hsaReghtm = "<area .*title=\"([0-9].*)\".*";
+		Pattern hsaPattern = Pattern.compile(hsaReghtm);
 		String htmReghsa = "<area .*title=\"hsa([0-9]+): (.*)\" onmouseover=.*";
 		Pattern hsaPatterng = Pattern.compile(htmReghsa);
+		String cpdReghtm = "<area .*title=\"(C.+) \\((.*)\\)\" onmouseover.*";
+		Pattern cpdPattern = Pattern.compile(cpdReghtm);
 		
 		while( (line = htmin.readLine()) != null ){
 			
 			Matcher hsaIdNameMatcher = hsaPattern.matcher(line);
 			Matcher hsaIdNameMatcherg = hsaPatterng.matcher(line);
+			Matcher cpdIdNameMatcher = cpdPattern.matcher(line);
 			
 			if(hsaIdNameMatcher.matches()){
 				String idnames[] = hsaIdNameMatcher.group(1).split(",");
@@ -87,6 +94,10 @@ public class Processing {
 			if(hsaIdNameMatcherg.matches()){
 				hsaIdNameMap.put(hsaIdNameMatcherg.group(1), hsaIdNameMatcherg.group(2));
 			}
+			if(cpdIdNameMatcher.matches()){
+				hsaIdNameMap.put(cpdIdNameMatcher.group(1), cpdIdNameMatcher.group(2));
+			}
+			
 		}
 		htmin.close();
 		
@@ -101,6 +112,7 @@ public class Processing {
 			Matcher matcher1 = pattern1.matcher(line);
 			Matcher matcher1g = pattern1g.matcher(line);
 			Matcher matcher1c = pattern1c.matcher(line);
+			Matcher matcher1cpd = pattern1cpd.matcher(line);
 			Matcher matcher2 = pattern2.matcher(line);
 			Matcher matcher3 = pattern3.matcher(line);
 			Matcher matcher4 = pattern4.matcher(line);
@@ -132,6 +144,17 @@ public class Processing {
 			
 			if(matcher1c.matches()){
 				tempc.add(Integer.parseInt( matcher1c.group(1) ) );
+			}
+			
+			
+			if(matcher1cpd.matches()){
+				Node node = new Node(null, null, null, null);
+				node.setId(Integer.parseInt( matcher1cpd.group(1) ));
+				Set<String> temps = new HashSet<String>();
+				temps.add(matcher1cpd.group(2));
+				node.setHsaId(temps);
+				node.setType(matcher1cpd.group(3));
+				allNodes.add(node);
 			}
 			
 			if (matcher2.matches()) {
